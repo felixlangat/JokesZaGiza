@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Random Joke Generator</title>
+    <style>
+      body {
+        background: #222;
+        color: #fff;
+        font-family: Arial, sans-serif;
+        text-align: center;
+      }
+      #kichwa {
+        text-align: center;
+        animation: colorChange 3s infinite;
+      }
+      @keyframes colorChange {
+        0% {
+          color: red;
+        }
+        27% {
+          color: green;
+        }
+        46% {
+          color: yellow;
+        }
+        70% {
+          color: violet;
+        }
+      }
+
+      #joke-container {
+        margin-top: 50px;
+        padding: 30px;
+        background: #333;
+        border-radius: 8px;
+        display: inline-block;
+        box-shadow: 0 0 20px #111;
+      }
+      #joke {
+        font-size: 1.3em;
+        margin-bottom: 30px;
+        white-space: pre-line;
+      }
+      #joke-btn {
+        padding: 12px 30px;
+        font-size: 1em;
+        background: #ff9800;
+        color: #222;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        25% {
+          transform: translateX(-10px);
+        }
+        75% {
+          transform: translateX(10px);
+        }
+      }
+      #joke-btn:hover {
+        background: #ffc107a6;
+        animation: shake 3s infinite;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="kichwa">Jokes Kutoka Kwa Giza Yani Dark Jokes Generator</h1>
+    <div id="joke-container">
+      <p id="joke">Click the button to get a joke!</p>
+      <button id="joke-btn">Get Random Joke</button>
+    </div>
+    <script>
+      const jokeBtn = document.getElementById("joke-btn");
+      const jokeDisplay = document.getElementById("joke");
+      const API_URL = " https://v2.jokeapi.dev/joke/Dark";
+
+      async function getJoke() {
+        jokeDisplay.textContent = "Loading joke...";
+        try {
+          const response = await fetch(API_URL);
+          if (!response.ok) throw new Error("Network error");
+          const data = await response.json();
+          let joke = "";
+          if (data.type === "single") {
+            joke = data.joke;
+          } else if (data.type === "twopart") {
+            joke = `${data.setup}\n\n${data.delivery}`;
+          } else {
+            joke = "Sorry, couldn't find a joke!";
+          }
+          jokeDisplay.textContent = joke;
+        } catch (error) {
+          jokeDisplay.textContent = "Error fetching joke. Try again!";
+        }
+      }
+
+      // Show a joke on page load
+      getJoke();
+      jokeBtn.addEventListener("click", getJoke);
+      
+      jokeBtn.addEventListener("click", () => {
+        getJoke();
+        document.body.style.backgroundImage = "url('images/dark 2.png')";
+      });
+    </script>
+  </body>
+</html>
